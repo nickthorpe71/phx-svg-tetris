@@ -1,6 +1,6 @@
 defmodule TetrisWeb.GameLive do
   use TetrisWeb, :live_view
-  alias Tetris.{Tetromino, Game}
+  alias Tetris.Game
 
   @left_keys ["ArrowLeft", "a"]
   @right_keys ["ArrowRight", "d"]
@@ -20,7 +20,7 @@ defmodule TetrisWeb.GameLive do
         <h1> Welcome to Tetris</h1>
         <%= render_board(assigns) %>
         <pre>
-          {<%= inspect @game.tetro %>}
+          {<%= inspect @game %>}
         </pre>
       </div>
     </section>
@@ -38,7 +38,7 @@ defmodule TetrisWeb.GameLive do
 
   defp render_points(assigns) do
     ~L"""
-    <%= for {x, y, shape} <- @game.points do %>
+    <%= for {x, y, shape} <- @game.points ++ Game.junkyard_points(@game) do %>
       <rect
         width="20" height="20"
         x="<%= (x - 1) * 20 %>" y="<%= (y - 1) * 20 %>"
@@ -61,9 +61,9 @@ defmodule TetrisWeb.GameLive do
     assign(socket, game: Game.new())
   end
 
-  defp new_tetromino(socket) do
-    assign(socket, game: Game.new_tetromino(socket.assigns.game))
-  end
+  # defp new_tetromino(socket) do
+  #   assign(socket, game: Game.new_tetromino(socket.assigns.game))
+  # end
 
   def rotate(%{assigns: %{game: game}} = socket) do
     assign(socket, game: Game.rotate(game))

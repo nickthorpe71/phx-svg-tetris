@@ -18,7 +18,11 @@ defmodule Tetris.Game do
   defp move_data(game, move_fn) do
     old = game.tetro
     new = game.tetro |> move_fn.()
-    valid = new |> Tetromino.show() |> Points.valid?()
+
+    valid =
+      new
+      |> Tetromino.show()
+      |> Points.valid?(game.junkyard)
 
     {old, new, valid}
   end
@@ -38,7 +42,18 @@ defmodule Tetris.Game do
   end
 
   def merge(game, old) do
-    game
+    new_junkyard =
+      old
+      |> Tetromino.show()
+      |> Enum.map(fn {x, y, shape} -> {{x, y}, shape} end)
+      |> Enum.into(game.junkyard)
+
+    %{game | junkyard: new_junkyard}
+  end
+
+  def junkyard_points(game) do
+    game.junkyard
+    |> Enum.map(fn {{x, y}, shape} -> {x, y, shape} end)
   end
 
   def left(game), do: game |> move(&Tetromino.left/1)
