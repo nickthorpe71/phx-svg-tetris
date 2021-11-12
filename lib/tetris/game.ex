@@ -34,11 +34,16 @@ defmodule Tetris.Game do
   end
 
   def move_down_or_merge(game, _old, new, true = _valid) do
-    %{game | tetro: new} |> show
+    %{game | tetro: new}
+    |> show
+    |> inc_score(1)
   end
 
   def move_down_or_merge(game, old, _new, false = _valid) do
-    game |> merge(old) |> new_tetromino |> show
+    game
+    |> merge(old)
+    |> new_tetromino
+    |> show
   end
 
   def merge(game, old) do
@@ -67,5 +72,9 @@ defmodule Tetris.Game do
 
   def show(game) do
     %{game | points: Tetromino.show(game.tetro)}
+  end
+
+  def inc_score(game, value) do
+    %{game | score: game.score + value}
   end
 end
