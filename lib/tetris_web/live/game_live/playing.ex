@@ -47,10 +47,6 @@ defmodule TetrisWeb.GameLive.Playing do
     assign(socket, game: Game.new())
   end
 
-  # defp new_tetromino(socket) do
-  #   assign(socket, game: Game.new_tetromino(socket.assigns.game))
-  # end
-
   def rotate(%{assigns: %{game: game}} = socket) do
     assign(socket, game: Game.rotate(game))
   end
@@ -68,7 +64,7 @@ defmodule TetrisWeb.GameLive.Playing do
   end
 
   def maybe_end_game(%{assigns: %{game: %{game_over: true}}} = socket) do
-    socket |> push_redirect(to: "/game/over")
+    socket |> push_redirect(to: "/game/over?score=#{socket.assigns.game.score}")
   end
 
   def maybe_end_game(socket), do: socket
