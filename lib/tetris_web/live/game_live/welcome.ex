@@ -13,7 +13,15 @@ defmodule TetrisWeb.GameLive.Welcome do
     push_redirect(socket, to: "/game/playing")
   end
 
+  defp dashboard(socket) do
+    push_redirect(socket, to: "/game/dashboard")
+  end
+
   def handle_event("play", _, socket) do
     {:noreply, play(socket)}
+  end
+
+  def handle_event("dashboard", _, socket) do
+    {:noreply, dashboard(socket)}
   end
 end

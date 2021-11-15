@@ -20,6 +20,7 @@ defmodule TetrisWeb.Router do
     live "/game", GameLive.Welcome, :welcome
     live "/game/playing", GameLive.Playing, :playing
     live "/game/over", GameLive.GameOver, :game_over
+    live "/game/dashboard", GameLive.Dashboard, :dashboard
     get "/", PageController, :index
   end
 
